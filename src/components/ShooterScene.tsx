@@ -4,6 +4,7 @@ import { startTransition, useEffect, useEffectEvent, useRef, useState } from "re
 import type { Room } from "colyseus.js";
 import * as THREE from "three";
 import {
+  ARENA_AXIS_LIMIT,
   ARENA_HALF_SIZE,
   NETWORK_TICK_MS,
   PLAYER_HEIGHT,
@@ -14,7 +15,14 @@ import {
 import { DEFAULT_STATS, type GameStats } from "../game/types";
 import { useKeyboard } from "../game/useKeyboard";
 import { createColyseusClient, getColyseusUrl, PIRATE_ROOM_NAME } from "../net/colyseus";
-import type { EnemySnapshot, ProjectileSnapshot, RemotePlayerSnapshot } from "../net/types";
+import type {
+  EnemySnapshot,
+  ProjectileSnapshot,
+  RemotePlayerSnapshot,
+  RoomEnemyState,
+  RoomPlayerState,
+  RoomProjectileState,
+} from "../net/types";
 import { PirateEnemy } from "./PirateEnemy";
 import { Projectile } from "./Projectile";
 import { RemotePirate } from "./RemotePirate";
@@ -33,7 +41,7 @@ type ShooterSceneProps = {
  * Keeps the locally controlled camera inside the playable deck bounds.
  */
 function clampToArena(value: number) {
-  return THREE.MathUtils.clamp(value, -ARENA_HALF_SIZE + 2, ARENA_HALF_SIZE - 2);
+  return THREE.MathUtils.clamp(value, -ARENA_AXIS_LIMIT, ARENA_AXIS_LIMIT);
 }
 
 /**
@@ -146,7 +154,7 @@ function Arena() {
 export function ShooterScene({ onStatsChange }: ShooterSceneProps) {
   const camera = useThree((state) => state.camera);
   const pressedKeysRef = useKeyboard();
-  const roomRef = useRef<Room<any> | null>(null);
+  const roomRef = useRef<Room | null>(null);
   const playerHueRef = useRef(180 + Math.random() * 30);
   const playerNameRef = useRef(`Captain ${Math.ceil(Math.random() * 99)}`);
   const lastShotAtRef = useRef(0);
@@ -194,7 +202,7 @@ export function ShooterScene({ onStatsChange }: ShooterSceneProps) {
     let totalPlayers = 0;
     const localPlayer = room.state.players?.get?.(room.sessionId);
 
-    room.state.players?.forEach((player: any, sessionId: string) => {
+    room.state.players?.forEach((player: RoomPlayerState, sessionId: string) => {
       totalPlayers += 1;
 
       if (sessionId === room.sessionId) {
@@ -215,7 +223,7 @@ export function ShooterScene({ onStatsChange }: ShooterSceneProps) {
       });
     });
 
-    room.state.enemies?.forEach((enemy: any) => {
+    room.state.enemies?.forEach((enemy: RoomEnemyState) => {
       nextEnemies.push({
         id: Number(enemy.id),
         hue: Number(enemy.hue ?? 180),
@@ -227,7 +235,7 @@ export function ShooterScene({ onStatsChange }: ShooterSceneProps) {
       });
     });
 
-    room.state.projectiles?.forEach((projectile: any) => {
+    room.state.projectiles?.forEach((projectile: RoomProjectileState) => {
       nextProjectiles.push({
         id: Number(projectile.id),
         ownerSessionId: projectile.ownerSessionId ?? "",

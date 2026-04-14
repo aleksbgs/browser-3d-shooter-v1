@@ -13,7 +13,7 @@ export function getColyseusUrl() {
  * Returns a short human-readable label describing the current multiplayer configuration.
  */
 export function getMultiplayerLabel() {
-  return getColyseusUrl() ? "Server configured" : "Local-only v2";
+  return getColyseusUrl() ? "Server configured" : "Local-only";
 }
 
 /**

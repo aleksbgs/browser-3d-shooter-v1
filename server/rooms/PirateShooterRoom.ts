@@ -1,7 +1,6 @@
 import { Room, type Client } from "colyseus";
+import { ARENA_AXIS_LIMIT } from "../../shared/arena.js";
 import { EnemyState, PirateShooterState, PlayerState, ProjectileState } from "./PirateShooterState.js";
-
-const ARENA_LIMIT = 26;
 const PLAYER_HEIGHT = 1.65;
 const PLAYER_START_Z = 18;
 const PLAYER_HEALTH = 100;
@@ -38,7 +37,7 @@ type ShootMessage = {
  * Clamps an incoming player position to the legal arena bounds on the server.
  */
 function clampPosition(value: number) {
-  return Math.max(-ARENA_LIMIT, Math.min(ARENA_LIMIT, value));
+  return Math.max(-ARENA_AXIS_LIMIT, Math.min(ARENA_AXIS_LIMIT, value));
 }
 
 /**
@@ -176,8 +175,8 @@ export class PirateShooterRoom extends Room<PirateShooterState> {
 
       if (
         projectile.ttlMs <= 0 ||
-        Math.abs(projectile.x) > ARENA_LIMIT + 10 ||
-        Math.abs(projectile.z) > ARENA_LIMIT + 10
+        Math.abs(projectile.x) > ARENA_AXIS_LIMIT + 10 ||
+        Math.abs(projectile.z) > ARENA_AXIS_LIMIT + 10
       ) {
         projectilesToDelete.add(projectileKey);
         return;
@@ -295,7 +294,7 @@ export class PirateShooterRoom extends Room<PirateShooterState> {
 
     for (let index = 0; index < count; index += 1) {
       const angle = ((Math.PI * 2) / count) * index + Math.random() * 0.4;
-      const radius = ARENA_LIMIT - 2 - Math.random() * 4;
+      const radius = ARENA_AXIS_LIMIT - 2 - Math.random() * 4;
       const enemy = new EnemyState();
       enemy.id = this.nextEnemyId++;
       enemy.hue = 170 + Math.random() * 35;
@@ -354,12 +353,6 @@ export class PirateShooterRoom extends Room<PirateShooterState> {
    * Counts active enemies remaining in the room.
    */
   private getEnemyCount() {
-    let enemies = 0;
-
-    this.state.enemies.forEach(() => {
-      enemies += 1;
-    });
-
-    return enemies;
+    return this.state.enemies.size;
   }
 }

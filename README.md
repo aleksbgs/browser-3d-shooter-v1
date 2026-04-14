@@ -39,6 +39,10 @@ npm run build
 npm run start:server
 ```
 
+The client build runs `tsc` and Vite. The server build removes `server-dist/`, then compiles `server/` and `shared/` into `server-dist/` (entry point: `server-dist/server/index.js`).
+
+Shared gameplay constants that must match on both sides (for example arena bounds) live in `shared/` and are re-exported from `src/game/config.ts` on the client.
+
 ## Next Steps
 
 1. Add PvP damage and server-side hit markers.

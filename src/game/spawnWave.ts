@@ -1,4 +1,4 @@
-import { ARENA_HALF_SIZE } from "./config";
+import { ARENA_AXIS_LIMIT } from "./config";
 import type { EnemySeed } from "./types";
 
 /**
@@ -8,7 +8,7 @@ export function createWave(wave: number, startId: number) {
   const count = Math.min(3 + wave * 2, 18);
   const enemies: EnemySeed[] = Array.from({ length: count }, (_, index) => {
     const angle = ((Math.PI * 2) / count) * index + Math.random() * 0.4;
-    const radius = ARENA_HALF_SIZE - 4 - Math.random() * 4;
+    const radius = ARENA_AXIS_LIMIT - 2 - Math.random() * 4;
 
     return {
       id: startId + index,

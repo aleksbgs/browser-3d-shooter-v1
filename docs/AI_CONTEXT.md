@@ -20,6 +20,7 @@ This is the AI-first entry document for agents that are just entering the repo.
 - Client root: `src/main.tsx`
 - App shell: `src/App.tsx`
 - Main scene and network bridge: `src/components/ShooterScene.tsx`
+- Shared arena constants (client + server): `shared/arena.ts` (also re-exported from `src/game/config.ts`)
 - Server bootstrap: `server/index.ts`
 - Authoritative room: `server/rooms/PirateShooterRoom.ts`
 - Room schema: `server/rooms/PirateShooterState.ts`
@@ -77,6 +78,7 @@ If you add a new gameplay mechanic and it affects the fair outcome of the game, 
 
 - `players`, `enemies`, and `projectiles` live in room state
 - `wave` comes from the server
+- arena horizontal limits for players are defined once in `shared/arena.ts` (`ARENA_AXIS_LIMIT`); client movement clamp and server `clampPosition` must stay aligned
 - the client must not decide the final outcome of combat on its own
 - `R` sends `respawn`; it does not reset the round locally
 - the client can predict feel, but it must not become the source of truth

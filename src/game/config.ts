@@ -1,7 +1,8 @@
+export { ARENA_AXIS_LIMIT, ARENA_HALF_SIZE } from "../../shared/arena";
+
 export const PLAYER_HEIGHT = 1.65;
 export const PLAYER_START_Z = 18;
 export const PLAYER_SPEED = 10;
-export const ARENA_HALF_SIZE = 28;
 export const ENEMY_REACH_DISTANCE = 1.9;
 export const BOARDING_DAMAGE = 14;
 export const BULLET_SPEED = 44;

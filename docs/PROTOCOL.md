@@ -29,7 +29,7 @@ Payload:
 
 Notes:
 
-- the server clamps position to the arena
+- the server clamps `x` and `z` to ±`ARENA_AXIS_LIMIT` (from `shared/arena.ts`; same bound the client uses for camera movement on the deck)
 - the server ignores dead players
 
 ### `shoot`

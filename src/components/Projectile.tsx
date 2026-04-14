@@ -1,38 +1,37 @@
-import { useEffect, useRef } from "react";
+import { useMemo } from "react";
 import * as THREE from "three";
 import type { ProjectileSnapshot } from "../net/types";
 
 const FORWARD = new THREE.Vector3(0, 0, 1);
-const LOOK_TARGET = new THREE.Vector3();
 
 type ProjectileProps = {
   projectile: ProjectileSnapshot;
 };
 
+function orientationFromDirection(dx: number, dy: number, dz: number) {
+  const quat = new THREE.Quaternion();
+  const dir = new THREE.Vector3(dx, dy, dz);
+
+  if (dir.lengthSq() < 1e-10) {
+    return quat;
+  }
+
+  dir.normalize();
+  quat.setFromUnitVectors(FORWARD, dir);
+  return quat;
+}
+
 /**
  * Renders a synced projectile and orients its trail in the direction provided by the server.
  */
 export function Projectile({ projectile }: ProjectileProps) {
-  const groupRef = useRef<THREE.Group>(null);
-
-  useEffect(() => {
-    const group = groupRef.current;
-
-    if (!group) {
-      return;
-    }
-
-    group.position.set(projectile.x, projectile.y, projectile.z);
-    LOOK_TARGET.set(
-      projectile.x + projectile.dx,
-      projectile.y + projectile.dy,
-      projectile.z + projectile.dz,
-    );
-    group.lookAt(LOOK_TARGET);
-  }, [projectile.dx, projectile.dy, projectile.dz, projectile.x, projectile.y, projectile.z]);
+  const quaternion = useMemo(
+    () => orientationFromDirection(projectile.dx, projectile.dy, projectile.dz),
+    [projectile.dx, projectile.dy, projectile.dz],
+  );
 
   return (
-    <group ref={groupRef}>
+    <group position={[projectile.x, projectile.y, projectile.z]} quaternion={quaternion}>
       <mesh castShadow>
         <sphereGeometry args={[0.13, 10, 10]} />
         <meshStandardMaterial
@@ -48,3 +47,4 @@ export function Projectile({ projectile }: ProjectileProps) {
     </group>
   );
 }
+

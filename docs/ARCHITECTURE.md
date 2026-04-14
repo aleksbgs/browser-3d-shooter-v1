@@ -6,6 +6,15 @@ The project is split into two main sides:
 
 - client: Vite + React + React Three Fiber + Three.js
 - server: a Colyseus room with schema state
+- shared: small TypeScript modules imported by both (see below)
+
+## Shared Layer
+
+- `shared/arena.ts`: `ARENA_HALF_SIZE` (deck geometry scale) and `ARENA_AXIS_LIMIT` (authoritative ±X/±Z clamp for players; equals half-size minus a rail margin).
+- The client re-exports these from `src/game/config.ts` alongside client-only tuning (`PLAYER_SPEED`, `NETWORK_TICK_MS`, and so on).
+- The server imports the same symbols with a `.js` extension in ESM output (`../../shared/arena.js` from room code).
+
+The server TypeScript project compiles `server/**/*.ts` and `shared/**/*.ts` into `server-dist/` with `rootDir` at the repository root, so shared code emits next to `server-dist/server/`.
 
 ## Client Layers
 
@@ -29,7 +38,7 @@ The project is split into two main sides:
 ### Network Layer
 
 - `src/net/colyseus.ts`: websocket URL and room name helpers
-- `src/net/types.ts`: client snapshot types derived from server state
+- `src/net/types.ts`: render snapshots (`RemotePlayerSnapshot`, and so on) plus structural types (`RoomPlayerState`, and so on) for mapping Colyseus schema fields without importing server modules
 
 ## Server Layers
 
@@ -92,3 +101,7 @@ If enemies, damage, and waves still lived on the client, each player would see a
   - projectile system
   - enemy system
   - wave system
+
+## Build Output (Server)
+
+After `npm run build:server`, run the game server with `npm run start:server`, which executes `server-dist/server/index.js`. Shared modules appear under `server-dist/shared/`.

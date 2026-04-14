@@ -33,11 +33,19 @@ Production build:
 npm run build
 ```
 
+`build:server` deletes the existing `server-dist/` folder first, then runs `tsc` so no stale files remain after layout or path changes.
+
 Run the built server:
 
 ```bash
 npm run start:server
 ```
+
+This runs `node server-dist/server/index.js` (compiled from `server/index.ts`).
+
+## Changing Arena Bounds
+
+Player position clamps and enemy spawn radii derive from `shared/arena.ts` (`ARENA_HALF_SIZE`, `ARENA_AXIS_LIMIT`). Edit that file, then run `npm run typecheck` and verify movement and server `clampPosition` behavior together.
 
 ## If Something Is Not Working
 

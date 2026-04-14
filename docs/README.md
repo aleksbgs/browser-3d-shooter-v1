@@ -18,3 +18,7 @@ The project is no longer just a visual prototype. In `v3` it includes:
 - server-side enemy, projectile, and wave logic
 
 That means it is easy to accidentally edit the client as if it were still locally authoritative. These documents are here to prevent that.
+
+## Shared Code
+
+- `shared/`: TypeScript modules compiled into both the Vite client graph and the Colyseus server build (for example `shared/arena.ts` for deck size and player axis limits). If you change movement or spawn bounds, update this layer and keep `server/rooms/PirateShooterRoom.ts` and the client in sync via the shared exports.
