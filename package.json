@@ -1,0 +1,40 @@
+{
+  "name": "browser-3d-shooter-v1",
+  "private": true,
+  "version": "0.3.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "dev:client": "vite",
+    "dev:server": "tsx watch server/index.ts",
+    "build": "npm run build:client && npm run build:server",
+    "build:client": "tsc -b && vite build",
+    "build:server": "tsc -p tsconfig.server.json",
+    "preview": "vite preview",
+    "start:server": "node server-dist/index.js",
+    "typecheck": "npm run typecheck:client && npm run typecheck:server",
+    "typecheck:client": "tsc --noEmit",
+    "typecheck:server": "tsc -p tsconfig.server.json --noEmit"
+  },
+  "dependencies": {
+    "@colyseus/schema": "^3.0.69",
+    "@colyseus/ws-transport": "^0.16.5",
+    "@react-three/drei": "latest",
+    "@react-three/fiber": "latest",
+    "colyseus": "^0.16.4",
+    "colyseus.js": "^0.16.19",
+    "react": "latest",
+    "react-dom": "latest",
+    "three": "latest"
+  },
+  "devDependencies": {
+    "@types/node": "^24.5.2",
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "@types/three": "latest",
+    "@vitejs/plugin-react": "latest",
+    "tsx": "^4.20.5",
+    "typescript": "latest",
+    "vite": "latest"
+  }
+}
