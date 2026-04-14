@@ -23,6 +23,7 @@
     "@react-three/fiber": "latest",
     "colyseus": "^0.16.4",
     "colyseus.js": "^0.16.19",
+    "dotenv": "^16.6.1",
     "react": "latest",
     "react-dom": "latest",
     "three": "latest"

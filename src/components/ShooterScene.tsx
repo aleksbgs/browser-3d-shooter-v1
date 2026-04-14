@@ -408,7 +408,9 @@ export function ShooterScene({ onStatsChange }: ShooterSceneProps) {
       });
       void room?.leave();
     };
-  }, [syncRoomState]);
+    // Intentionally no deps: connect once on mount. `syncRoomState` is a stable useEffectEvent;
+    // listing it here re-ran this effect every render and retried joinOrCreate in a tight loop.
+  }, []);
 
   /**
    * Sends a shoot intent to the authoritative room when the local fire cooldown allows it.

@@ -19,6 +19,21 @@ If you want the client to connect automatically:
 1. copy `.env.example` to `.env`
 2. make sure `VITE_COLYSEUS_URL` points to the local server
 
+## Docker Compose
+
+From the repo root, optionally create `.env` from `.env.example` (ports: `COLYSEUS_PORT`, `WEB_HOST_PORT`, websocket host `COLYSEUS_WS_HOST`, room name `COLYSEUS_ROOM_NAME`, and optional `VITE_COLYSEUS_URL`).
+
+```bash
+make up
+```
+
+- **Web**: `http://localhost:${WEB_HOST_PORT:-8080}`
+- **Colyseus**: WebSocket on host port `${COLYSEUS_PORT:-2567}`; the client image is built with matching `VITE_*` build args from the same `.env` defaults.
+
+Other useful targets: `make down`, `make logs`, `make build`, `make up-fg` (foreground), `make rebuild`.
+
+If you open the app from another machine, set `COLYSEUS_WS_HOST` (or a full `VITE_COLYSEUS_URL`) in `.env`, then rebuild the `web` image.
+
 ## Build And Checks
 
 Typecheck:

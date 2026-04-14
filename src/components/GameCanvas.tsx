@@ -21,7 +21,7 @@ export function GameCanvas({ onStatsChange }: GameCanvasProps) {
           position: [0, PLAYER_HEIGHT, PLAYER_START_Z],
         }}
         dpr={[1, 1.75]}
-        shadows
+        shadows="percentage"
       >
         <ShooterScene onStatsChange={onStatsChange} />
       </Canvas>

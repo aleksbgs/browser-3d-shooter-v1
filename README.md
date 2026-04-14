@@ -26,7 +26,26 @@ npm run dev:client
 
 ## Multiplayer
 
-Copy `.env.example` to `.env` if you want the client to automatically try connecting to a local Colyseus server.
+Copy `.env.example` to `.env` and adjust ports and URLs as needed (see comments in that file). The server reads `PORT`, `COLYSEUS_PORT`, and `COLYSEUS_ROOM_NAME`; the Vite client exposes only `VITE_*` variables (`VITE_COLYSEUS_URL`, or `VITE_COLYSEUS_HOST` / `VITE_COLYSEUS_PORT` when the full URL is left unset).
+
+If `VITE_COLYSEUS_URL` is not set in dev, the client builds a default `ws://` URL using the current page hostname and port **2567** so Docker and LAN previews work without editing the bundle.
+
+## Docker (full stack)
+
+Requires Docker with Compose v2. Docker Compose reads a root `.env` file for variable substitution; see `.env.example` for `COLYSEUS_PORT`, `WEB_HOST_PORT`, `COLYSEUS_WS_HOST`, and related keys.
+
+```bash
+make up
+```
+
+By default the UI is at **http://localhost:8080** (`WEB_HOST_PORT`) and Colyseus on the host port from `COLYSEUS_PORT` (default **2567**). Override those in `.env` before `make up`.
+
+```bash
+make down    # stop
+make logs    # follow logs
+```
+
+For another host or port, set the corresponding variables in `.env` and rebuild (`make rebuild` or `docker compose build`).
 
 ## Docs
 

@@ -4,9 +4,9 @@ This document describes the contract between the client and the Colyseus room.
 
 ## Room Name
 
-- `pirate_shooter_v2`
+- Default: `pirate_shooter_v2`, overridable on the server with `COLYSEUS_ROOM_NAME` and on the client with `VITE_COLYSEUS_ROOM_NAME` (they must match).
 
-The name is historical for now. The implementation is `v3`, but the room identifier has not been renamed yet.
+The default name is historical; the gameplay model is newer than the identifier suggests.
 
 ## Client To Server Messages
 
